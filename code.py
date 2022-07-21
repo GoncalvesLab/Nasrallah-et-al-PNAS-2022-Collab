@@ -70,31 +70,20 @@ def inflection_point(traces, activity, activity_base, start, end):
 
 
 
-filelistdg = glob.glob(r'C:\Users\Agus\Desktop\Exp41_motioncorrected_movies\M8003dg.csv') #(change here if I want gtrl or EE or whatever)
-filelistmossy = glob.glob(r"C:\Users\Agus\Desktop\Exp41_motioncorrected_movies\M8003mossy.csv") #(change here if I want gtrl or EE or whatever)
+filelistdg = glob.glob(r'file path.csv')
+filelistmossy = glob.glob(r'file path.csv')
 
 filenamedg = filelistdg[0]
 filenamemossy = filelistmossy[0]
 
-#window_sizeM8003 = 1300 #[500:1000] [1800:2000]
-#window_sizeM6000 = 1800 #[500:1000] [2220:2351]
-#window_sizeM5001 = 200 #std 4 #[500:1000] [2592:2791]
-#window_sizeM3001 = 2300 #[500:1000] [2668:2792]
-#window_sizeM12ndinj001 = 2100 #[500:1000] [2500:2792]
-#window_sizeM10SalineMossy002 = 0 #[500:1000] [2500:2792] bad
-#window_sizeM10SalineDG002 = 0 #[500:1000] [2500:2792]
-
-'''
-windows unfiltered traces:
-    M8003 activity [500:1000] [1700:2518] inflection [1467:1819] minpeak [1360:1560] max peak [1640:1919]
-    M6000 activity [500:1000] [2205:2518] inflectiondg [2145:2219] inflectionmossy [2145:2219] no min or max peak
-    M5001 activity [500:1000] [2610:2989] inflectiondg [2491:2617] inflectionmossy [2491:2617] min peak [2411:2584], max peak [2557:2690]
-    M3001 activity [500:1000] [2698:2990] inflectiondg [2558:2711] inflectionmossy [2558:2711] min peak [2345:2684], max peak [2578:2817]
-    M2ndinj001 activity [500:1000] [2485:2997] inflectiondg [2352:2511] inflectionmossy [2352:2511] min peak [2338:2491], max peak [2378:2817]
+# windows unfiltered traces:
+# M1 activity [500:1000] [1700:2518] inflection [1467:1819] minpeak [1360:1560] max peak [1640:1919]
+# M2 activity [500:1000] [2205:2518] inflectiondg [2145:2219] inflectionmossy [2145:2219] no min or max peak
+# M3 activity [500:1000] [2610:2989] inflectiondg [2491:2617] inflectionmossy [2491:2617] min peak [2411:2584], max peak [2557:2690]
+# M4 activity [500:1000] [2698:2990] inflectiondg [2558:2711] inflectionmossy [2558:2711] min peak [2345:2684], max peak [2578:2817]
+# M5 activity [500:1000] [2485:2997] inflectiondg [2352:2511] inflectionmossy [2352:2511] min peak [2338:2491], max peak [2378:2817]
     
-'''
-
-#determine start and end of window to determine activity
+#window size to calculate activity
 startdg = 800
 enddg = 1000
 
@@ -138,30 +127,6 @@ plt.plot(tracesdg[0])
 plt.figure()
 plt.plot(tracesmossy[0])
 
-
-# Filter traces
-#tracesdg_filtered = filter1(tracesdg)
-#tracesmossy_filtered = filter1(tracesmossy)
-
-plt.figure()
-plt.plot(tracesdg_filtered[0])
-
-plt.figure()
-plt.plot(tracesdg_filtered[1])
-
-plt.figure()
-plt.plot(tracesdg_filtered[2])
-
-plt.figure()
-plt.plot(tracesmossy_filtered[0])
-
-plt.figure()
-plt.plot(tracesmossy_filtered[1])
-
-plt.figure()
-plt.plot(tracesmossy_filtered[2])
-
-
 # Activity
 
 activity_mossy_base = activity(tracesmossy, 800, 1000)
@@ -200,6 +165,7 @@ for i in range(len(tracesmossy)):
 
 
 plt.plot(tracesmossy[0])
+
 
 #Mean trace analysis using raw traces
 adgmean = np.array(tracesdg)
@@ -258,38 +224,3 @@ print('min peak diff: ' + str(min_peak_diff_sec))
 
 # plt.legend()
 # plt.savefig(os.path.join('\\'.join(filenamedg.split('\\')[:-1]),'mean traces figure {}.svg'.format(filenamemossy.split('\\')[-1].split('.')[0][:-5])))
-
-# Use Ruptures to determine inflection point
-
-filelistdg = glob.glob(r'C:\Users\Agus\Desktop\Exp41_motioncorrected_movies\extracted ROIs from imagej dg\M10SalineDG002.csv') #(change here if I want gtrl or EE or whatever)
-filelistmossy = glob.glob(r'C:\Users\Agus\Desktop\Exp41_motioncorrected_movies\extracted ROIs from imagej dg\M10SalineMossy002.csv') #(change here if I want gtrl or EE or whatever)
-
-filenamedg = filelistdg[0]
-filenamemossy = filelistmossy[0]
-
-for i in range(len(tracesdg_filtered[:25])):
-    plt.figure()
-    plt.plot(tracesdg_filtered[i])
-    plt.plot(tracesmossy_filtered[i])
-    
-filenamedg = filelistdg[0] #unfiltered
-filenamemossy = filelistmossy[0] #unfiltered
-
-tracesdg_filtered = filter1(tracesdg, 10) #filtered
-tracesmossy_filtered = filter1(tracesmossy, 10) #filtered
-
-#write csv file:
-import csv 
-   
-f = open(r'C:\Users\Agus\Desktop\kaoutsar analysis last/csv_filedg.csv', 'w')
-
-# create the csv writer
-writer = csv.writer(f)
-
-# write a row to the csv file
-writer.writerow(tracesdg_filtered[0])
-writer.writerow(tracesdg_filtered[1])
-writer.writerow(tracesdg_filtered[2])
-
-# close the file
-f.close()
